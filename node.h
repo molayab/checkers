@@ -5,7 +5,7 @@
 #include "board.h"
 
 class Node {
-	Board * value;
+	Board value;
 	Node * child[];
 	unsigned long size;
 	unsigned long length;

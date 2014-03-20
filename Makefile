@@ -11,5 +11,8 @@ $(EXECUTABLE): $(OBJECTS)
 .o:
 	$(CC) -c $< -o $@
 
+run:
+	./checkgame
+
 clean:
 	rm -rf *.o

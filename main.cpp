@@ -6,6 +6,18 @@ using namespace std;
 int main(int argc, char * argv[]) {
 	Game g;
 
+	CGCoordinate2D from;
+	from.x = 5;
+	from.y = 0;
+
+	CGCoordinate2D to;
+	to.x = 5;
+	to.y = 0;
+
+		cout << g.getTokenKind(BLACK_KING) << endl;
+	
+	
+
 	Board * b = g.getBoard();
 
 	for (int i = 0; i < ROWS; ++i) {
