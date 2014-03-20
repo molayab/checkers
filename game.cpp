@@ -107,7 +107,7 @@ bool Game::isKing(const token_t token) {
 }
 
 token_t Game::getTokenKind(const token_t token) {
-  return (token_t)((token >> 4) << 4);
+  return (token_t)(token & 0xF0);
 }
 
 token_t Game::getOppositeToken(const token_t token) {

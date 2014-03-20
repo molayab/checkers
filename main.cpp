@@ -13,10 +13,8 @@ int main(int argc, char * argv[]) {
 	CGCoordinate2D to;
 	to.x = 5;
 	to.y = 0;
-
-		cout << g.getTokenKind(BLACK_KING) << endl;
 	
-	
+	cout << g.getOppositeToken(BLACK) << endl;
 
 	Board * b = g.getBoard();
 
