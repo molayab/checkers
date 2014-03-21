@@ -27,7 +27,8 @@ class Game {
 	Board * board;
 	uint8_t turn;
 
-	void perform(const CGCoordinate2D, const CGCoordinate2D, bool=false);
+    void perform(const CGCoordinate2D, const CGCoordinate2D);
+    void eat(const CGCoordinate2D);
 
 public:
 	Game();
@@ -40,8 +41,9 @@ public:
 	bool isKing(const token_t);
 	token_t getTokenKind(const token_t);
 	token_t getOppositeToken(const token_t);
-	jump_t getJumpKind(const CGCoordinate2D, const CGCoordinate2D);
+    jump_t getJumpKind(const CGCoordinate2D, const CGCoordinate2D, token_t);
 	Board * getBoard() const;
+    void crown(const CGCoordinate2D);
 };
 
 #endif

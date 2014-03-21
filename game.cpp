@@ -1,7 +1,7 @@
 #include "game.h"
 
 Game::Game() {
-	board = new Board(8, 8);
+    board = new Board(ROWS, COLS);
 
 	init();
 }
@@ -52,9 +52,9 @@ bool Game::isValid(const CGCoordinate2D from, const CGCoordinate2D to) {
     }
 
     if (abs(from.x - to.x) == 2 && from.y != to.y) {
-      CGCoordinate2D tmp = to;
+      CGCoordinate2D tmp = from;
 
-      switch(getJumpKind(from, to)) {
+      switch(getJumpKind(from, to, getTokenKind(tokenFrom))) {
         case RIGHT:
           if (getTokenKind(tokenFrom) == BLACK) {
             tmp.x++;
@@ -68,12 +68,12 @@ bool Game::isValid(const CGCoordinate2D from, const CGCoordinate2D to) {
           break;
         case LEFT:
           if (getTokenKind(tokenFrom) == BLACK) {
-            tmp.x--;
-            tmp.y--;
-
-          } else if (getTokenKind(tokenFrom) == WHITE) {
             tmp.x++;
             tmp.y++;
+
+          } else if (getTokenKind(tokenFrom) == WHITE) {
+            tmp.x--;
+            tmp.y--;
 
           }
           break;
@@ -82,17 +82,29 @@ bool Game::isValid(const CGCoordinate2D from, const CGCoordinate2D to) {
       }
 
       token_t token = board->getDataAt(tmp.x, tmp.y);
-      return (getOppositeToken(token) != tokenFrom);
+
+      if (getTokenKind(getOppositeToken(token)) ==
+              getTokenKind(tokenFrom)) {
+
+          eat(tmp);
+          return true;
+      }
     }
   }
   
   return false;
 }
 
-jump_t Game::getJumpKind(const CGCoordinate2D from, const CGCoordinate2D to) {
-  if (from.y > to.y) return LEFT;
-  else if (from.y < to.y) return RIGHT;
-  else return SAME;
+jump_t Game::getJumpKind(const CGCoordinate2D from, const CGCoordinate2D to, token_t token) {
+    if (getTokenKind(token) == WHITE) {
+        if (from.y > to.y) return LEFT;
+        else if (from.y < to.y) return RIGHT;
+        else return SAME;
+    } else {
+        if (from.y < to.y) return LEFT;
+        else if (from.y > to.y) return RIGHT;
+        else return SAME;
+    }
 }
 
 bool Game::isKing(const token_t token) {
@@ -114,11 +126,23 @@ token_t Game::getOppositeToken(const token_t token) {
   return (token_t)(~token & 0xF0);
 }
 
-void Game::perform(const CGCoordinate2D from, const CGCoordinate2D to , bool eat) {
-  if (!eat) {
+void Game::perform(const CGCoordinate2D from, const CGCoordinate2D to)
+{
     token_t tmp = board->getDataAt(from.x, from.y);
+    board->setDataAt(from.x, from.y, NIL);
     board->setDataAt(to.x, to.y, tmp);
-  } else {
 
-  }
+    if (to.x == 0 || to.x == ROWS - 1) {
+        crown(to);
+    }
+}
+
+void Game::eat(const CGCoordinate2D token) {
+    board->setDataAt(token.x, token.y, NIL);
+}
+
+void Game::crown(const CGCoordinate2D token) {
+    token_t crown = (token_t)(board->getDataAt(token.x, token.y) | 0x0F);
+
+    board->setDataAt(token.x, token.y, crown);
 }

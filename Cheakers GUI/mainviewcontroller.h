@@ -18,8 +18,14 @@ public:
     explicit MainViewController(QWidget *parent = 0);
     ~MainViewController();
 
+private slots:
+    void on_tableView_clicked(const QModelIndex &index);
+    
 private:
     Game game;
+    uint8_t clickCount;
+    CGCoordinate2D from, to;
+
     Ui::MainViewController *ui;
     QStandardItemModel * getModel() const;
 };

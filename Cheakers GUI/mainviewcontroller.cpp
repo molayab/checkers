@@ -7,6 +7,8 @@ MainViewController::MainViewController(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    clickCount = 0;
+
     QPalette p;
     p.setColor(QPalette::Highlight, QColor(52, 52, 52, 128));
 
@@ -59,5 +61,20 @@ MainViewController::~MainViewController()
 
 void MainViewController::on_tableView_clicked(const QModelIndex &index)
 {
+    if ((clickCount % 2) == 0) {
+        from.x = index.row();
+        from.y = index.column();
+    } else {
+        to.x = index.row();
+        to.y = index.column();
 
+        if (game.play(from, to)) {
+            ui->tableView->setModel(getModel());
+        } else {
+            QMessageBox::about(this, "Error", "Movimiento invalido!");
+
+        }
+    }
+
+    ++clickCount;
 }
