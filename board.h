@@ -16,11 +16,13 @@ class Board {
 
 public:
 	Board(unsigned int, unsigned int);
-	~Board();
+    ~Board();
 
 	void setDataAt(unsigned int, unsigned int, token_t);
 	token_t getDataAt(unsigned int, unsigned int) const;
 	token_t ** getContext() const;
+    unsigned int getRows();
+    unsigned int getColumns();
 };
 
 #endif

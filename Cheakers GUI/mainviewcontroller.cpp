@@ -3,9 +3,10 @@
 
 MainViewController::MainViewController(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainViewController)
-{
+    ui(new Ui::MainViewController) {
     ui->setupUi(this);
+
+    game = Game::instance();
 
     clickCount = 0;
 
@@ -19,8 +20,8 @@ MainViewController::MainViewController(QWidget *parent) :
     ui->tableView->setPalette(p);
 }
 
-QStandardItemModel * MainViewController::getModel() const {
-    Board * board = game.getBoard();
+QStandardItemModel * MainViewController::getModel() {
+    Board * board = game->getBoard();
 
     QStandardItemModel * model = new QStandardItemModel(ROWS, COLS);
 
@@ -54,27 +55,44 @@ QStandardItemModel * MainViewController::getModel() const {
     return model;
 }
 
-MainViewController::~MainViewController()
-{
+QStandardItemModel * MainViewController::getModel(std::vector<CGCoordinate2D> r) {
+    QStandardItemModel * model = getModel();
+
+    for (unsigned int i = 0; i < r.size(); ++i) {
+       model->setData(model->index(r[i].x, r[i].y), QBrush(QColor(94, 149, 208, 25)));
+       model->setData(model->index(r[i].x, r[i].y), QBrush(QColor(60, 118, 231)), Qt::BackgroundColorRole);
+    }
+
+    return model;
+}
+
+MainViewController::~MainViewController() {
     delete ui;
 }
 
-void MainViewController::on_tableView_clicked(const QModelIndex &index)
-{
+void MainViewController::on_tableView_clicked(const QModelIndex &index) {
     if ((clickCount % 2) == 0) {
         from.x = index.row();
         from.y = index.column();
+
+        std::vector<CGCoordinate2D> ret = game->getPossibleMoves(from);
+
+        qDebug("CLICK\n%lu\n", ret.size());
+
+        ui->tableView->setModel(getModel(ret));
+
     } else {
         to.x = index.row();
         to.y = index.column();
 
-        if (game.play(from, to)) {
-            ui->tableView->setModel(getModel());
-        } else {
+        if (!game->play(from, to)) {
             QMessageBox::about(this, "Error", "Movimiento invalido!");
-
         }
+
+        ui->tableView->setModel(getModel());
     }
+
+
 
     ++clickCount;
 }

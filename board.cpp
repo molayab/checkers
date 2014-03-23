@@ -19,35 +19,45 @@ Board::Board(unsigned int rows, unsigned int columns) {
 	 * columnas destinadas.
 	 */
 
-	for (int i = 0; i < rows; ++i) {
+    for (unsigned int i = 0; i < rows; ++i) {
 		data[i] = new token_t[columns]; 
 	}
 }
 
 Board::~Board() {
-	/*
-	 * Se borran los datos de la memoria.
-	 */
+    /*
+     * Se borran los datos de la memoria.
+     */
 
-	for (int i = 0; i < rows; ++i) {
-		delete [] data[i];
-	}
+    for (unsigned int i = 0; i < rows; ++i) {
+        delete [] data[i];
+    }
 
-	/*
-	 * Se borra los restantes de la matriz.
-	 */
+    /*
+     * Se borra los restantes de la matriz.
+     */
 
-	delete [] data;
+    delete [] data;
 }
 
 void Board::setDataAt(unsigned int row, unsigned int col, token_t val) {
-	data[row][col] = val;
+    if (row < rows && col < columns) data[row][col] = val;
 }
 
 token_t Board::getDataAt(unsigned int row, unsigned int col) const {
-	return data[row][col];
+    if (row < rows && col < columns) return data[row][col];
+
+    return NIL;
 }
 
 token_t ** Board::getContext() const {
 	return data;
+}
+
+unsigned int Board::getRows() {
+    return rows;
+}
+
+unsigned int Board::getColumns() {
+    return columns;
 }

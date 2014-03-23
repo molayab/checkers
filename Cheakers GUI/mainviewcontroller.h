@@ -22,12 +22,13 @@ private slots:
     void on_tableView_clicked(const QModelIndex &index);
     
 private:
-    Game game;
+    Game * game;
     uint8_t clickCount;
     CGCoordinate2D from, to;
 
     Ui::MainViewController *ui;
-    QStandardItemModel * getModel() const;
+    QStandardItemModel * getModel();
+    QStandardItemModel * getModel(std::vector<CGCoordinate2D>);
 };
 
 #endif // MAINVIEWCONTROLLER_H

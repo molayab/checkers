@@ -1,21 +1,26 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <cstdlib>
+#include <vector>
 #include "board.h"
+#include "struct.h"
+
 
 class Node {
-	Board value;
-	Node * child[];
-	unsigned long size;
-	unsigned long length;
+    std::vector<Node> childs;
+    //Board board;
+    CGCoordinate2D move;
+    uint8_t heuristic;
 
 public:
-	Node(unsigned long size);
-	~Node();
+    Node(Board *, int);
 
-	void add(Board * value);
-	Board * value();
+    uint8_t getHeuristic();
+    bool isLeaf();
+    size_t getLength();
+    Node * getNodeAt(int);
+    CGCoordinate2D getMove();
+    void setHeuristic(uint8_t);
 };
 
 #endif

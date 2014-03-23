@@ -11,18 +11,22 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Cheakers
 TEMPLATE = app
 
+CONFIG += console
 CONFIG += c++11
 
 SOURCES += main.cpp\
         mainviewcontroller.cpp \
     ../board.cpp \
     ../game.cpp \
-    ../node.cpp
+    ../node.cpp \
+    ../minimax.cpp
 
 HEADERS  += mainviewcontroller.h \
     ../board.h \
     ../game.h \
-    ../node.h
+    ../node.h \
+    ../minimax.h \
+    ../struct.h
 
 FORMS    += mainviewcontroller.ui
 
