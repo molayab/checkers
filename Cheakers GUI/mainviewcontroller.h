@@ -10,7 +10,7 @@ namespace Ui {
 class MainViewController;
 }
 
-class MainViewController : public QMainWindow
+class MainViewController : public QMainWindow, public GameDelegate
 {
     Q_OBJECT
 
@@ -21,6 +21,10 @@ public:
 private slots:
     void on_tableView_clicked(const QModelIndex &index);
     
+    void on_actionNew_triggered();
+
+    void on_actionSalir_triggered();
+
 private:
     Game * game;
     uint8_t clickCount;
@@ -29,6 +33,10 @@ private:
     Ui::MainViewController *ui;
     QStandardItemModel * getModel();
     QStandardItemModel * getModel(std::vector<CGCoordinate2D>);
+
+    // Delegado Game
+    void didWonGame(Game *, player_t);
+    void didChangeScore(Game *, uint8_t, uint8_t);
 };
 
 #endif // MAINVIEWCONTROLLER_H

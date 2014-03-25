@@ -15,14 +15,14 @@ class Board {
 	unsigned int columns;
 
 public:
-	Board(unsigned int, unsigned int);
-    ~Board();
+    Board(unsigned int, unsigned int);
+    virtual ~Board();
 
-	void setDataAt(unsigned int, unsigned int, token_t);
-	token_t getDataAt(unsigned int, unsigned int) const;
-	token_t ** getContext() const;
-    unsigned int getRows();
-    unsigned int getColumns();
+    virtual void setDataAt(unsigned int, unsigned int, token_t);
+    virtual token_t getDataAt(unsigned int, unsigned int) const;
+    virtual token_t ** getContext() const;
+    virtual unsigned int getRows();
+    virtual unsigned int getColumns();
 };
 
 #endif
